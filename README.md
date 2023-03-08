@@ -1,0 +1,1 @@
+"alx-system-engineering-devops" is dedicated to teaching users the basics of shell scripting. One of the directories in this repository is "0x00-shell-basics," which includes various scripts that cover different aspects of shell basics
