@@ -53,7 +53,9 @@ backend th3gr00t-tech-backend
 echo "$server_config" | sudo dd status=none of=/etc/haproxy/haproxy.cfg
 
 # enable haproxy to be started by init script
-echo "ENABLED=1" | sudo dd status=none of=/etc/default/haproxy
+echo "ENABLED=1" | sudo tee /etc/default/haproxy
+
+# echo "ENABLED=1" | sudo dd status=none of=/etc/default/haproxy
 
 if [ "$(pgrep -c haproxy)" -le 0 ]; then
 	sudo service haproxy start
