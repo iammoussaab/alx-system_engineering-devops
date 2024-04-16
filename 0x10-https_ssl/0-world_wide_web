@@ -4,8 +4,9 @@
 # Function to get DNS information for a subdomain
 get_dns_info() {
     local URL="$1.$2"
-    local IP=$(dig "$URL" | grep -A1 'ANSWER SECTION:' | tail -1 | awk '{print $5}')
-    local RECORDTYPE=$(dig "$URL" | grep -A1 'ANSWER SECTION:' | tail -1 | awk '{print $4}')
+    local RESPONSE=$(dig "$URL")
+    local IP=$(echo "$RESPONSE" | awk '/ANSWER SECTION:/ {getline; print $5}')
+    local RECORDTYPE=$(echo "$RESPONSE" | awk '/ANSWER SECTION:/ {getline; print $4}')
     echo "The subdomain $1 is a $RECORDTYPE record and points to $IP"
 }
 
@@ -21,4 +22,3 @@ else
     echo "Usage: $0 <domain> [subdomain]"
     exit 1
 fi
-
