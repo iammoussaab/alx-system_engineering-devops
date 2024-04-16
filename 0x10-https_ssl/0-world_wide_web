@@ -4,9 +4,16 @@
 # Function to get DNS information for a subdomain
 get_dns_info() {
     local URL="$1.$2"
-    local RESPONSE=$(dig "$URL")
-    local IP=$(echo "$RESPONSE" | awk '/ANSWER SECTION:/ {getline; print $5}')
-    local RECORDTYPE=$(echo "$RESPONSE" | awk '/ANSWER SECTION:/ {getline; print $4}')
+    local RESPONSE=$(dig +short "$URL")
+    
+    if [[ -z "$RESPONSE" ]]; then
+        echo "No records found for $URL"
+        return
+    fi
+
+    local IP=$(echo "$RESPONSE" | head -1)
+    local RECORDTYPE=$(dig "$URL" | awk '/ANSWER SECTION:/ {getline; print $4}')
+    
     echo "The subdomain $1 is a $RECORDTYPE record and points to $IP"
 }
 
