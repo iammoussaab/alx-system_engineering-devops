@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Start Apache so as to return a
-# page conatining Hello Holberton
-service apache2 start
-echo "Hello Holberton" > /var/www/html/index.html
+# this scripts fixes the apache server
+# Start Apache so as to return a page conatining Hello Holberton
+sudo service apache2 start
