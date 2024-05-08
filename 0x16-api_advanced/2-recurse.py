@@ -1,37 +1,37 @@
 #!/usr/bin/python3
 """
-Recursive function that queries Reddit API returns a list containing the
-titles of all hot articles for a given subreddit.
+Recursive function that queries the Reddit API and returns
+a list containing the titles of all hot articles for a given subreddit.
+If no results are found for the given subreddit,
+the function should return None.
 """
+
 import requests
 
 
-def recurse(subreddit, hot_list=[], after=None):
-    """Returns a list of titles of all hot posts on a given subreddit."""
-    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
+def recurse(subreddit, hot_list=[], after=""):
+    """
+    Queries the Reddit API and returns
+    a list containing the titles of all hot articles for a given subreddit.
 
-    headers = {'User-Agent': 'RedditDataAnalyzer/1.0 (ALX Africa)'}
-    params = {'limit': 100}  # Limit the number of posts to 100 (maximum)
+    - If not a valid subreddit, return None.
+    """
+    req = requests.get(
+        "https://www.reddit.com/r/{}/hot.json".format(subreddit),
+        headers={"User-Agent": "Custom"},
+        params={"after": after},
+    )
 
-    if after:
-        params['after'] = after
-
-    response = requests.get(url, headers=headers, params=params,
-                            allow_redirects=False)
-
-    if response.status_code == 200:
-        data = response.json()
-
-        for post in data.get('data', {}).get('children', []):
-            title = post.get('data', {}).get('title', '')
+    if req.status_code == 200:
+        for get_data in req.json().get("data").get("children"):
+            dat = get_data.get("data")
+            title = dat.get("title")
             hot_list.append(title)
+        after = req.json().get("data").get("after")
 
-        # Check if there are more pages (pagination) and continue the recursion
-        after = data.get('data', {}).get('after')
-        if after:
+        if after is None:
+            return hot_list
+        else:
             return recurse(subreddit, hot_list, after)
-
-        # If no more pages, return the hot_list
-        return hot_list
     else:
         return None
