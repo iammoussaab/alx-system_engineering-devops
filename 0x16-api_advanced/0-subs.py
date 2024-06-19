@@ -9,10 +9,8 @@ import requests
 def number_of_subscribers(subreddit):
     """
     Queries the Reddit API and returns the number of subscribers for a given subreddit.
-
     Args:
         subreddit (str): The name of the subreddit.
-
     Returns:
         int: The number of subscribers for the subreddit. If the subreddit is not valid, returns 0.
     """
