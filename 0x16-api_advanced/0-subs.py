@@ -22,6 +22,3 @@ def number_of_subscribers(subreddit):
         return req.json().get("data").get("subscribers")
     else:
         return 0
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        print(number_of_subscribers(sys.argv[1]))
